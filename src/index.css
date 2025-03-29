@@ -1,0 +1,103 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 225 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 225 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 225 25% 15%;
+
+    --primary: 196 83% 49%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 262 83% 66%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 262 83% 66%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 196 83% 49%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 225 25% 15%;
+    --foreground: 210 40% 98%;
+
+    --card: 225 25% 15%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 225 25% 15%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 196 83% 49%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 262 83% 66%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 262 83% 66%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 196 83% 49%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .streak-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-fitstreaks-teal to-fitstreaks-green text-white shadow transition-all duration-300;
+  }
+  
+  .score-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-fitstreaks-purple to-fitstreaks-teal text-white shadow transition-all duration-300;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white/80 to-white/30 backdrop-blur-sm border border-white/20;
+  }
+  
+  .fancy-border-gradient {
+    @apply relative bg-white rounded-xl p-[1px] before:absolute before:inset-0 before:rounded-xl before:p-[2px] before:bg-gradient-to-r before:from-fitstreaks-teal before:to-fitstreaks-purple before:-z-10;
+  }
+}

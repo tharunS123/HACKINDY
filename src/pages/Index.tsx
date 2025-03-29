@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Activity, ChevronRight, Dumbbell, Users, Trophy, Calendar } from "lucide-react";
@@ -10,6 +9,7 @@ import PointsBadge from "@/components/PointsBadge";
 import WorkoutCard from "@/components/WorkoutCard";
 import UserCard from "@/components/UserCard";
 import LeagueCard from "@/components/LeagueCard";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // Mock Data
 const mockWorkouts = [
@@ -100,14 +100,17 @@ const mockLeagues = [
 ];
 
 const Dashboard = () => {
+  const { user } = useAuth0();
+  const firstName = user?.name?.split(' ')[0] || 'there';
+
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-hero-pattern text-white pt-12 pb-20">
+      <section className="bg-hero-pattern text-white py-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              <h1 className="text-3xl font-bold mb-2">Welcome back, Alex!</h1>
+              <h1 className="text-3xl font-bold mb-2">Welcome back, {firstName}!</h1>
               <p className="mb-6 text-white/80">
                 You're making great progress on your fitness journey. Keep up the momentum!
               </p>

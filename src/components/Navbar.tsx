@@ -1,11 +1,12 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { Activity, Search, Bell, Menu } from "lucide-react";
+import { Activity, Search, Bell, Menu, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   return (
     <header className="fixed top-0 left-0 right-0 w-full bg-background/80 backdrop-blur-md z-50 border-b">
@@ -21,49 +22,67 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4">
-            <Link 
-              to="/" 
-              className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
-            >
-              Dashboard
-            </Link>
-            <Link 
-              to="/workouts" 
-              className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
-            >
-              Workouts
-            </Link>
-            <Link 
-              to="/social" 
-              className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
-            >
-              Social
-            </Link>
-            <Link 
-              to="/profile" 
-              className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
-            >
-              Profile
-            </Link>
-          </nav>
+          {isAuthenticated && (
+            <nav className="hidden md:flex items-center space-x-4">
+              <Link 
+                to="/dashboard" 
+                className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to="/workouts" 
+                className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
+              >
+                Workouts
+              </Link>
+              <Link 
+                to="/social" 
+                className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
+              >
+                Social
+              </Link>
+              <Link 
+                to="/profile" 
+                className="text-sm font-medium hover:text-fitstreaks-teal transition-colors"
+              >
+                Profile
+              </Link>
+            </nav>
+          )}
 
           {/* Action Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-fitstreaks-coral rounded-full" />
-            </Button>
-            <Button 
-              variant="default" 
-              size="sm" 
-              className="hidden md:inline-flex bg-gradient-to-r from-fitstreaks-teal to-fitstreaks-purple hover:opacity-90 transition-opacity"
-            >
-              Log Workout
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button variant="ghost" size="icon" className="hidden md:inline-flex">
+                  <Search className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="hidden md:inline-flex">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-fitstreaks-coral rounded-full" />
+                </Button>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium hidden md:inline-block">
+                    {user?.name}
+                  </span>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                  >
+                    <LogOut className="h-5 w-5" />
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <Button
+                onClick={() => loginWithRedirect()}
+                className="bg-gradient-to-r from-fitstreaks-teal to-fitstreaks-purple hover:opacity-90"
+              >
+                Sign In
+              </Button>
+            )}
             
             {/* Mobile Menu Button */}
             <Button 
@@ -82,48 +101,59 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-b shadow-lg animate-slide-in">
           <div className="container mx-auto px-4 py-4">
-            <nav className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link 
-                to="/workouts" 
-                className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-              >
-                Workouts
-              </Link>
-              <Link 
-                to="/social" 
-                className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-              >
-                Social
-              </Link>
-              <Link 
-                to="/profile" 
-                className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-              >
-                Profile
-              </Link>
-              <div className="pt-2 border-t flex items-center justify-between">
-                <Button variant="ghost" size="sm">
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
+            {isAuthenticated ? (
+              <nav className="flex flex-col space-y-4">
+                <Link 
+                  to="/dashboard" 
+                  className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  to="/workouts" 
+                  className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
+                >
+                  Workouts
+                </Link>
+                <Link 
+                  to="/social" 
+                  className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
+                >
+                  Social
+                </Link>
+                <Link 
+                  to="/profile" 
+                  className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
+                >
+                  Profile
+                </Link>
+                <div className="pt-2 border-t flex items-center justify-between">
+                  <Button variant="ghost" size="sm">
+                    <Search className="h-4 w-4 mr-2" />
+                    Search
+                  </Button>
+                  <Button variant="ghost" size="sm">
+                    <Bell className="h-4 w-4 mr-2" />
+                    Notifications
+                  </Button>
+                </div>
+                <Button 
+                  variant="ghost"
+                  className="w-full"
+                  onClick={() => logout({ returnTo: window.location.origin })}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
                 </Button>
-                <Button variant="ghost" size="sm">
-                  <Bell className="h-4 w-4 mr-2" />
-                  Notifications
-                </Button>
-              </div>
-              <Button 
-                variant="default" 
+              </nav>
+            ) : (
+              <Button
+                onClick={() => loginWithRedirect()}
                 className="w-full bg-gradient-to-r from-fitstreaks-teal to-fitstreaks-purple"
               >
-                Log Workout
+                Sign In
               </Button>
-            </nav>
+            )}
           </div>
         </div>
       )}
